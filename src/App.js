@@ -1,25 +1,104 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';  //useStateの読み込み
+import './styles.css';
 
-function App() {
+import { InputTodo } from './components/InputTodo'; //テキストボックス用コンポーネントファイル
+import { IncompleteTodos } from './components/IncompleteTodos'; //未完了リスト用コンポーネントファイル
+import { CompleteTodos } from './components/CompleteTodos'; //完了リスト用コンポーネントファイル
+
+export const App =  () =>  {
+  const [todoText, setTodoText] = useState("");
+  
+  const [incompleteTodos, setIncompleteTodos] = useState([1,2,]);
+  const [completeTodos, setCompleteTodos] = useState([3]);
+  
+  const onChangeTodoText = (event) => setTodoText(event.target.value );
+
+  const onClickAdd = () => {
+    if(todoText === "") return;
+    const newTodos = [...incompleteTodos, todoText];
+    setIncompleteTodos(newTodos);
+    setTodoText("");
+  };
+
+  const onClickDelete = (index) => {
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index,1);
+    setIncompleteTodos(newTodos);
+  };
+
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index,1);
+    setIncompleteTodos(newIncompleteTodos);
+
+    const newCompleteTodos = [...completeTodos,incompleteTodos[index]];
+    setCompleteTodos(newCompleteTodos);  
+  };
+
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index,1);
+    setCompleteTodos(newCompleteTodos);
+
+    const newIncompleteTodos = [...incompleteTodos,completeTodos[index]];
+    setIncompleteTodos(newIncompleteTodos);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>  
+      {/* テキストボックス用コンポーネント呼び出し*/}
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeTodoText}
+        onClick={onClickAdd}
+      />
+      {/* コンポーネント化前 */}
+      {/* <div className='input-area'>
+        <input
+         placeholder='TODOを入力'
+         value={todoText}
+         onChange={onChangeTodoText}     
+        />
+        <button onClick={onClickAdd}>追加</button>
+      </div> */}
 
-export default App;
+      {/* 未完了リスト用コンポーネント呼び出し */}
+      <IncompleteTodos
+        todos={incompleteTodos}
+        onClickComplete={onClickComplete}
+        onClickDelete={onClickDelete}
+      />
+      {/* コンポーネント化前 */}
+      {/* <div className='incomplete-area'>
+        <p className='title'>未完了のTODO</p>
+        <ul>
+          {incompleteTodos.map((todo,index) => {
+            return(
+              <div key={todo}  className='list-row' >
+                <li>{todo}</li>
+                <button onClick={() => onClickComplete(index)}>完了</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
+              </div>
+            );
+          })}        
+        </ul>
+      </div> */}
+
+      {/* コンポーネント化前 */}
+      {/* <div className='complete-area'>
+         <p className='title'>完了のTODO</p>
+          <ul>
+            {completeTodos.map((todo,index) => {
+              return(
+                <div key={todo} className='list-row'>
+                <li>{todo}</li>
+                <button onClick={() => onClickBack(index)}>戻る</button>
+                </div>
+              );
+            })}            
+          </ul>
+      </div> */}
+      {/* 完了リスト用コンポーネント呼び出し */}
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
+    </>
+  );
+};
