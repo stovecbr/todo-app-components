@@ -11,8 +11,10 @@ export const App =  () =>  {
   const [incompleteTodos, setIncompleteTodos] = useState([1,2,]);
   const [completeTodos, setCompleteTodos] = useState([3]);
   
+  // 値を取得
   const onChangeTodoText = (event) => setTodoText(event.target.value );
 
+  // 追加ボタンクリック
   const onClickAdd = () => {
     if(todoText === "") return;
     const newTodos = [...incompleteTodos, todoText];
@@ -20,12 +22,14 @@ export const App =  () =>  {
     setTodoText("");
   };
 
+  // 削除ボタンクリック　未完了リスト用
   const onClickDelete = (index) => {
     const newTodos = [...incompleteTodos];
     newTodos.splice(index,1);
     setIncompleteTodos(newTodos);
   };
 
+  // 完了ボタンクリック
   const onClickComplete = (index) => {
     const newIncompleteTodos = [...incompleteTodos];
     newIncompleteTodos.splice(index,1);
@@ -35,6 +39,7 @@ export const App =  () =>  {
     setCompleteTodos(newCompleteTodos);  
   };
 
+  // 戻るボタンクリック
   const onClickBack = (index) => {
     const newCompleteTodos = [...completeTodos];
     newCompleteTodos.splice(index,1);
@@ -43,6 +48,15 @@ export const App =  () =>  {
     const newIncompleteTodos = [...incompleteTodos,completeTodos[index]];
     setIncompleteTodos(newIncompleteTodos);
   }
+
+  // onClickDeleteComplete追加
+  // 削除ボタンクリック　完了リスト用
+  const onClickDeleteComplete = (index) => {
+    const newTodos = [...CompleteTodos];
+    newTodos.splice(index,1);
+    setCompleteTodos(newTodos);
+  }
+
   return (
     <>  
       {/* テキストボックス用コンポーネント呼び出し*/}
@@ -67,7 +81,7 @@ export const App =  () =>  {
         onClickComplete={onClickComplete}
         onClickDelete={onClickDelete}
       />
-      {/* コンポーネント化前 */}
+      {/* コンポーネント化前 未完了のTODO*/}
       {/* <div className='incomplete-area'>
         <p className='title'>未完了のTODO</p>
         <ul>
@@ -83,7 +97,7 @@ export const App =  () =>  {
         </ul>
       </div> */}
 
-      {/* コンポーネント化前 */}
+      {/* コンポーネント化前　完了のTODO */}
       {/* <div className='complete-area'>
          <p className='title'>完了のTODO</p>
           <ul>
@@ -98,7 +112,16 @@ export const App =  () =>  {
           </ul>
       </div> */}
       {/* 完了リスト用コンポーネント呼び出し */}
-      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
+      {/* 元のコード */}
+      {/* <CompleteTodos todos={completeTodos} onClickBack={onClickBack} /> */}
+
+
+      {/* onClickDeleteComplete追加　Uncaught TypeError・・・CompleteTodos is not iterable */}
+      <CompleteTodos
+         todos={completeTodos}
+         onClickBack={onClickBack}
+         onClickDelete={onClickDeleteComplete}
+       />
     </>
   );
 };
