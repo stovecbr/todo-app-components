@@ -9,7 +9,7 @@ export const App =  () =>  {
   const [todoText, setTodoText] = useState("");
   
   const [incompleteTodos, setIncompleteTodos] = useState([1,2,]);
-  const [completeTodos, setCompleteTodos] = useState([3]);
+  const [completeTodos, setCompleteTodos] = useState([3,4]);
   
   // 値を取得
   const onChangeTodoText = (event) => setTodoText(event.target.value );
@@ -47,15 +47,15 @@ export const App =  () =>  {
 
     const newIncompleteTodos = [...incompleteTodos,completeTodos[index]];
     setIncompleteTodos(newIncompleteTodos);
-  }
+  };
 
   // onClickDeleteComplete追加
   // 削除ボタンクリック　完了リスト用
   const onClickDeleteComplete = (index) => {
-    const newTodos = [...CompleteTodos];
+    const newTodos = [...completeTodos];  //CompleteTodos -> completeTodosへ修正しエラー解消
     newTodos.splice(index,1);
     setCompleteTodos(newTodos);
-  }
+  };
 
   return (
     <>  
@@ -116,7 +116,7 @@ export const App =  () =>  {
       {/* <CompleteTodos todos={completeTodos} onClickBack={onClickBack} /> */}
 
 
-      {/* onClickDeleteComplete追加　Uncaught TypeError・・・CompleteTodos is not iterable */}
+      {/* {/* onClickDeleteComplete追加 */}
       <CompleteTodos
          todos={completeTodos}
          onClickBack={onClickBack}

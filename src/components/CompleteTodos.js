@@ -35,23 +35,22 @@ import React from "react";
 
 
 
-// onClickDeleteComplete追加　Uncaught TypeError・・・CompleteTodos is not iterable 
+
 export const CompleteTodos = (props) => {
-  const { todos, onClickBack, onClickDelete } = props;
+  const {todos,onClickBack,onClickDelete} = props;
   return (
     <div className='complete-area'>
       <p className='title'>完了のTODO</p>
       <ul>
        {todos.map((todo,index) => {
-         return(
-          
+         return(          
            <div key={index} className='list-row'>
            <li>{todo}</li>
            <button onClick={() => onClickBack(index)}>戻る</button>
            <button onClick={() => onClickDelete(index)}>削除</button>
            </div>
          );
-       })}            
+       })}
       </ul> 
    </div>
   );
